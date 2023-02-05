@@ -48,8 +48,8 @@ class UNet(nn.Module):
         self.outc = torch.utils.checkpoint(self.outc)
 
 def test():
-    x = torch.randn((3, 1, 161, 161))
-    model = UNet(n_channels=1, n_classes=1)
+    x = torch.randn((3, 3, 161, 161))
+    model = UNet(n_channels=3, n_classes=3)
     preds = model(x)
     assert preds.shape == x.shape
 

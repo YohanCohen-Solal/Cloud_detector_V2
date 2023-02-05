@@ -24,10 +24,10 @@ IMAGE_HEIGHT = 240
 IMAGE_WIDTH = 240
 PIN_MEMORY = True
 LOAD_MODEL = False
-TRAIN_IMG_DIR = "./IA/data2/whole_sky_images_train/"
-TRAIN_MASK_DIR = "./IA/data2/annotation/"
-VAL_IMG_DIR = "./IA/data2/whole_sky_images_test/"
-VAL_MASK_DIR = "./IA/data2/annotation_test/"
+TRAIN_IMG_DIR = "IA/Data2/X_train"
+TRAIN_MASK_DIR = "IA/Data2/targets_train"
+VAL_IMG_DIR = "IA/Data2/X_test"
+VAL_MASK_DIR = "IA/Data2/targets_test"
 
 def train_fn(loader, model, optimizer, loss_fn, scaler):
     loop = tqdm(loader)

@@ -17,7 +17,7 @@ class BasicDataset(Dataset):
         img_path = os.path.join(self.image_dir, self.images[index])
         mask_path = os.path.join(self.mask_dir, self.images[index].replace(".jpg", "_mask.jpg"))
         image = np.array(Image.open(img_path).convert("RGB"))
-        mask = np.array(Image.open(mask_path).convert("L"), dtype=np.float32)
+        mask = np.array(Image.open(mask_path), dtype=np.float32)
         mask[mask == 100.0] = 0.0
 
         if self.transform is not None:
