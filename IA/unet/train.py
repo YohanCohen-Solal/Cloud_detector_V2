@@ -15,14 +15,14 @@ from utils import (
 )
 
 # Hyperparameters etc.
-CHOSEN_MODEL = "Unet"
+CHOSEN_MODEL = "ResAttUnet"
 LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 BATCH_SIZE = 3
 NUM_EPOCHS = 30
 NUM_WORKERS = 2
-IMAGE_HEIGHT = 240
-IMAGE_WIDTH = 240
+IMAGE_HEIGHT = 256
+IMAGE_WIDTH = 256
 PIN_MEMORY = True
 LOAD_MODEL = False
 TRAIN_IMG_DIR = "IA/Data2/X_train"
