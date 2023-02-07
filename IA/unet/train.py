@@ -4,7 +4,7 @@ from albumentations.pytorch import ToTensorV2
 from tqdm import tqdm
 import torch.nn as nn
 import torch.optim as optim
-from model import UNET
+from model_ResAttUnet import ResidualAttentionUNet
 from unet_model import UNet
 from utils import (
     load_checkpoint,
@@ -15,6 +15,7 @@ from utils import (
 )
 
 # Hyperparameters etc.
+CHOSEN_MODEL = "Unet"
 LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 BATCH_SIZE = 3
@@ -80,7 +81,11 @@ def main():
         ],
     )
 
-    model = UNet(n_channels=3, n_classes=1).to(DEVICE)
+    if (CHOSEN_MODEL == "ResAttUnet"):
+        model = ResidualAttentionUNet(inputChannel=3, outputChannel=1).to(DEVICE)
+    elif (CHOSEN_MODEL == "Unet"):
+        model = UNet(n_channels=3, n_classes=1).to(DEVICE)
+
     loss_fn = nn.BCEWithLogitsLoss()
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
