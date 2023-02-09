@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+//import React from "react";
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import './Dropzone.css';
@@ -20,9 +21,13 @@ const Dropzone = () => {
 
   return (
     <div>
-      <div {...getRootProps({ className: 'dropzone' })}>
-        <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
+      <div id="drop_"{...getRootProps({ className: 'dropzone' })}>
+        <input className="input-zone"{...getInputProps()} />
+        <div className="text-center">
+          <p className="dropzone-content">
+            Drag 'n' drop some files here, or click to select files
+          </p>
+        </div>
       </div>
       {prediction && <p>Prediction: {prediction}</p>}
     </div>
