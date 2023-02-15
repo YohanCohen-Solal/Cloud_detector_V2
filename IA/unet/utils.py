@@ -63,7 +63,7 @@ def check_accuracy(loader, model, device="cuda"):
             y = y.to(device).unsqueeze(1)
             y[y == 100] = 0
 
-            preds = torch.sigmoid(model(x))
+            preds = torch.sigmoid(model(x)) # Prédit la segmentation
             preds = (preds > 0.5).float()
             num_correct += (preds == y).sum()
             num_pixels += torch.numel(preds)
@@ -85,7 +85,7 @@ def save_predictions_as_imgs(
             preds = torch.sigmoid(model(x))
             preds = (preds > 0.5).float()
         torchvision.utils.save_image(
-            preds, f"preds/pred_{idx}.png"
+            preds, f"IA/preds/pred_{idx}.png"
         )
         torchvision.utils.save_image(y.unsqueeze(1), f"{folder}{idx}.png")
 

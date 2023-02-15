@@ -15,7 +15,7 @@ from utils import (
 )
 
 # Hyperparameters etc.
-CHOSEN_MODEL = "Unet"
+CHOSEN_MODEL = "ResAttUnet"
 LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 BATCH_SIZE = 3
