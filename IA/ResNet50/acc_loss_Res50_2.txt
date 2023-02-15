@@ -1,0 +1,2 @@
+accuracy: 0.739
+val_acc: 0.665
