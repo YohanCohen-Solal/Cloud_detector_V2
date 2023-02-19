@@ -10,6 +10,7 @@ IA/saved_images/*
 IA/Data2/*
 IA/preds/*
 IA/saved_images/*
+IA/Data/*
 # Ignore Terraform state files
 terraform/*.tfstate
 terraform/*.tfstate.*
