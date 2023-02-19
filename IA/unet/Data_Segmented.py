@@ -1,42 +1,47 @@
 import torch
 import torchvision
-import numpy as np
-import albumentations as A
 import torchvision.transforms as transforms
 import os 
-
-from unet_model import UNet
+from model_ResAttUnet import ResidualAttentionUNet
 from PIL import Image
-# Model class must be defined somewhere
 
-model = UNet(n_channels=3, n_classes=1)
+# Check if GPU is available
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+# Disable gradient computation during inference
+torch.set_grad_enabled(False)
+
+# Initialize model and load saved parameters
+model = ResidualAttentionUNet(inputChannel=3, outputChannel=1)
 model.load_state_dict(torch.load('my_checkpoint.pth.h5')['state_dict'])
+model.to(device)
 model.eval()
 
-directory = "IA/Data"
-for folder in os.listdir(directory):
-    f = os.path.join(directory, folder)
-    isExist = os.path.exists(f"IA/DataSegmented/{folder}")
-    if isExist == False:
-        os.mkdir(f"IA/DataSegmented/{folder}")
-    for images in os.listdir(f):
+# Specify input and output directories
+input_dir = "IA/Data"
+output_dir = "IA/DataSegmented"
 
-        print(images)
-        img_path = os.path.join(f,images)
-        pil_image = Image.open(img_path)
-
-        width, height = pil_image.size
-        new_width = 240
-        new_height = 240
-        pil_image = pil_image.resize((new_width, new_height), Image.ANTIALIAS)
-
-        to_tensor = transforms.ToTensor()
-        tensor_image = to_tensor(pil_image)
-        tensor_image = tensor_image.unsqueeze(0)
-        try:
-            preds = torch.sigmoid(model(tensor_image))
-            torchvision.utils.save_image(preds, f"IA/DataSegmented/{folder}/{images}")
-        except:
-            print("error occured")
+# Loop over subdirectories in input directory
+for folder in os.listdir(input_dir):
+    input_folder = os.path.join(input_dir, folder)
+    output_folder = os.path.join(output_dir, folder)
+    
+    # Create output directory if it does not exist
+    os.makedirs(output_folder, exist_ok=True)
+    
+    # Loop over images in input directory
+    for image_filename in os.listdir(input_folder):
+        input_path = os.path.join(input_folder, image_filename)
         
+        # Load and preprocess image
+        pil_image = Image.open(input_path).resize((256, 256), Image.ANTIALIAS)
+        transform = transforms.Compose([
+            transforms.ToTensor()
+        ])
+        tensor_image = transform(pil_image).unsqueeze(0).to(device)
+        
+        # Run inference and save output
+        with torch.no_grad():
+            preds = torch.sigmoid(model(tensor_image))
+        output_path = os.path.join(output_folder, image_filename)
+        torchvision.utils.save_image(preds, output_path)
