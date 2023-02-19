@@ -8,6 +8,8 @@ my_checkpoint.pth.h5
 best_checkpoint.h5
 IA/saved_images/*
 IA/Data2/*
+IA/preds/*
+IA/saved_images/*
 # Ignore Terraform state files
 terraform/*.tfstate
 terraform/*.tfstate.*
