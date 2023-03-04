@@ -1,20 +1,29 @@
 from flask import Flask, request
 from flask_cors import CORS
 
+from keras.models import load_model
 import torch
-import torchvision
 import torchvision.transforms as transforms
+import numpy as np
+from keras.utils import img_to_array
 from PIL import Image
-import os 
-from IA.unet.unet_model import UNet
+from keras.applications.regnet import preprocess_input
+from model_ResAttUnet import ResidualAttentionUNet
 
 app = Flask(__name__)
 CORS(app)
 
-model = UNet(n_channels=3, n_classes=1)
+model = ResidualAttentionUNet(inputChannel=3, outputChannel=1)
 
 model.load_state_dict(torch.load('my_checkpoint.pth.h5')['state_dict'])
 model.eval()
+
+
+classification_model = load_model('resnet35_model2.h5')
+classes = ["Altocumulus", "Altostratus", "Cirrocumulus", "Cirrostratus",
+           "Cirrus", "Cumulonimbus", "Cumulus", "Nimbostratus",
+           "Stratocumulus", "Stratus", "clearSky"]
+
 
 @app.route("/predict", methods=['POST'])
 def predict():
@@ -22,22 +31,37 @@ def predict():
     image = Image.open(file)
 
     width, height = image.size
-    new_width = 240
-    new_height = 240
+    new_width = 256
+    new_height = 256
     pil_image = pil_image.resize((new_width, new_height), Image.ANTIALIAS)
 
     to_tensor = transforms.ToTensor()
     tensor_image = to_tensor(pil_image)
     tensor_image = tensor_image.unsqueeze(0)
     try:
-        preds = torch.sigmoid(model(tensor_image))
+        pred_segmentation = torch.sigmoid(model(tensor_image))
     except:
-        print("error occured")
+        return "Error during segmentation"
+
+    pred_segmentation = pred_segmentation.resize((224, 224), Image.ANTIALIAS)
+
+    x = img_to_array(pred_segmentation)
+    x = np.expand_dims(x, axis=0)
+    x = preprocess_input(x)
+    try:
+        preds = model.predict(x)
+        pred_class = np.argmax(preds)
+        pred_class_name = classes[pred_class]
+
+        return pred_class_name
+    except:
+        return "error during classification"
+
 
 @app.route("/")
 def test():
     return "test test test 111 houston everything is good..."
 
+
 if __name__ == "__main__":
     app.run()
-

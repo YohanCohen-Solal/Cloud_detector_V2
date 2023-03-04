@@ -1,6 +1,7 @@
 my_checkpoint.pth.h5
 
 # just in case
+res35_seg_model1.h5
 /IA/DataSegmented
 /IA/my_checkpoint.pth.tar 
 /WebApp/node_modules
