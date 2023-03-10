@@ -6,6 +6,7 @@ import api from "./api";
 
 function App() {
   const [response, setResponse] = useState("");
+  const [result, setResult] = useState(null);
 
   useEffect(() => {
     api
@@ -16,6 +17,13 @@ function App() {
       .catch(err => {
         console.log(err);
       });
+    api.get('/result')
+    .then(res => {
+      setResult(res.data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
   }, []);
 
   return (
@@ -25,7 +33,7 @@ function App() {
         <p id="typo_ombre">Principle : Insert an image of cloud and we will tell you which type it is</p>
         <Dropzone />
         <h3>The type of cloud is : </h3>
-        <p>{response}</p>
+        <p>{result}</p>
       </header>
     </div>
   );

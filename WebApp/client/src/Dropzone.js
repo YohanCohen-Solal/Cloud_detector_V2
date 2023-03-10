@@ -8,13 +8,15 @@ const Dropzone = () => {
   const [prediction, setPrediction] = useState(null);
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*',
-    onDrop: async acceptedFiles => {
+    onDrop: async acceptedFiles =>  {
+      
       // Send the image file to the server
       const response = await axios.post('http://localhost:5000/predict', {
         image: acceptedFiles[0]
       });
 
       // Display the prediction
+      console.log('zzzzzzzzzzzzzzz',acceptedFiles);
       setPrediction(response.data.class);
     }
   });
