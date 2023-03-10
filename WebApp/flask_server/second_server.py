@@ -12,8 +12,8 @@ from PIL import Image
 from functions import *
 
 app_dir = os.getcwd()
-UPLOAD_FOLDER = "C:/Users/victo/Desktop/Cours/Cloud_detector_V2/WebApp/uploaded_file"
-SEGMENTED_FOLDER = "C:/Users/victo/Desktop/Cours/Cloud_detector_V2/WebApp/segmented_file"
+UPLOAD_FOLDER = "WebApp/uploaded_file"
+SEGMENTED_FOLDER = "WebApp/segmented_file"
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__)
