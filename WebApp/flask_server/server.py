@@ -19,11 +19,14 @@ model.load_state_dict(torch.load('my_checkpoint.pth.h5')['state_dict'])
 model.eval()
 
 
-classification_model = load_model('resnet35_model2.h5')
+classification_model = load_model('res35_seg_model1.h5')
 classes = ["Altocumulus", "Altostratus", "Cirrocumulus", "Cirrostratus",
            "Cirrus", "Cumulonimbus", "Cumulus", "Nimbostratus",
            "Stratocumulus", "Stratus", "clearSky"]
 
+@app.route("/result", methods=['GET'])
+def getresult(pred_class_name):
+    return pred_class_name
 
 @app.route("/predict", methods=['POST'])
 def predict():
@@ -53,6 +56,7 @@ def predict():
         pred_class = np.argmax(preds)
         pred_class_name = classes[pred_class]
 
+        getresult(pred_class_name)
         return pred_class_name
     except:
         return "error during classification"
