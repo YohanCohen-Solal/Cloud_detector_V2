@@ -73,7 +73,7 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 @app.route('/segmented/<filename>')
-def uploaded_file(filename):
+def segmented_file(filename):
     print("Current Workdir: " + app_dir)
     print("jsp: "+ app.config['SEGMENTED_FOLDER'])
     return send_from_directory(app.config['SEGMENTED_FOLDER'], filename)
