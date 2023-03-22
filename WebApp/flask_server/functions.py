@@ -22,6 +22,7 @@ classes = ["Altocumulus", "Altostratus", "Cirrocumulus", "Cirrostratus",
 
 classification_no_segmentaiton = load_model('resnet_model2.h5')
 
+
 def preprocess_image(step, images):
     if step == "segmentation":
         print("je suis passer par le preprocess segmentation")
@@ -37,7 +38,7 @@ def preprocess_image(step, images):
         print("je vais retourner l'image sous forme de tenseur...")
 
         return tensor_image
-    
+
     elif step == "classification":
         print("je suis passer par le preprocess classification")
         print("j'ai réussi à resize l'image")
@@ -54,13 +55,13 @@ def preprocess_image(step, images):
 
 
 def predict(step, image):
-    print(step +": ")
+    print(step + ": ")
     if step == "segmentation":
         print("je suis entré dans la fonction predict pour la segmentation")
         img = preprocess_image(step, image)
         pred_segmentation = torch.sigmoid(model(img))
         return pred_segmentation
-    
+
     elif step == "classification":
         print("je suis entré dans la fonction predict pour la classification")
         img = preprocess_image(step, image)
@@ -71,22 +72,23 @@ def predict(step, image):
 
         return pred_class_name
 
+
 def classificatieur(images):
-        print("je suis passer par le preprocess classification")
-        print("j'ai réussi à resize l'image")
+    print("je suis passer par le preprocess classification")
+    print("j'ai réussi à resize l'image")
 
-        x = img_to_array(images)
-        print("j'ai réussi à convertir l'image en array")
-        x = np.expand_dims(x, axis=0)
-        print("j'ai réussi à augmenter la dimention")
-        x = preprocess_input(x)
-        print("j'ai réussi à preprocess l'imput")
-        print("je vais maintenant retourner l'image preprocess pour la classification")
+    x = img_to_array(images)
+    print("j'ai réussi à convertir l'image en array")
+    x = np.expand_dims(x, axis=0)
+    print("j'ai réussi à augmenter la dimention")
+    x = preprocess_input(x)
+    print("j'ai réussi à preprocess l'imput")
+    print("je vais maintenant retourner l'image preprocess pour la classification")
 
-        print("je suis entré dans la fonction predict pour la classification")
-        preds = classification_model.predict(x)
-        pred_class = np.argmax(preds)
-        pred_class_name = classes[pred_class]
-        print("je vais maintenant retourner la classe")
+    print("je suis entré dans la fonction predict pour la classification")
+    preds = classification_no_segmentaiton.predict(x)
+    pred_class = np.argmax(preds)
+    pred_class_name = classes[pred_class]
+    print("je vais maintenant retourner la classe")
 
-        return pred_class_name
+    return pred_class_name
