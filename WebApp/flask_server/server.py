@@ -10,14 +10,15 @@ from PIL import Image
 from keras.applications.regnet import preprocess_input
 from model_ResAttUnet import ResidualAttentionUNet
 
+map_location=torch.device('cpu')
 app = Flask(__name__)
 CORS(app)
 
 model = ResidualAttentionUNet(inputChannel=3, outputChannel=1)
+torch.load('my_checkpoint.pth.h5', map_location=torch.device('cpu'))['state_dict']
 
-model.load_state_dict(torch.load('my_checkpoint.pth.h5')['state_dict'])
+#model.load_state_dict(torch.load('my_checkpoint.pth.h5')['state_dict'])
 model.eval()
-
 
 classification_model = load_model('res35_seg_model1.h5')
 classes = ["Altocumulus", "Altostratus", "Cirrocumulus", "Cirrostratus",

@@ -8,7 +8,6 @@ from werkzeug.utils import secure_filename
 import torchvision
 import keras.utils as image
 from PIL import Image
-
 from functions import *
 
 app_dir = os.getcwd()
