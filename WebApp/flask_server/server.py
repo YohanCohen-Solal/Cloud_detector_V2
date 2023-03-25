@@ -17,7 +17,6 @@ CORS(app)
 model = ResidualAttentionUNet(inputChannel=3, outputChannel=1)
 torch.load('my_checkpoint.pth.h5', map_location=torch.device('cpu'))['state_dict']
 
-#model.load_state_dict(torch.load('my_checkpoint.pth.h5')['state_dict'])
 model.eval()
 
 classification_model = load_model('res35_seg_model1.h5')
