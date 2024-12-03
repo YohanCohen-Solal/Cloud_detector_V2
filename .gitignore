@@ -9,7 +9,7 @@ res35_seg_model1.h5
 best_checkpoint.h5
 IA/Data2/*
 IA/preds/*
-IA/saved_images/*
+tree/main/IA/saved_images
 IA/Data/*
 res35_seg_model1.h5
 
